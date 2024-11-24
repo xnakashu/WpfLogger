@@ -15,9 +15,6 @@ public partial class ViewModel : ObservableObject, IObserver<LogEntry>, IDisposa
     [ObservableProperty]
     private ObservableCollection<LogEntry> records = new();
 
-    [ObservableProperty]
-    private string displayLabel = "aa";
-
     public ViewModel(ILogger<ViewModel> logger, ILogEntryObservable logObserve)
     {
         this.logger = logger;
@@ -33,6 +30,13 @@ public partial class ViewModel : ObservableObject, IObserver<LogEntry>, IDisposa
         logger.LogTrace("trace");
         logger.LogError("error");
         logger.LogWarning("warn");
+    }
+
+    [RelayCommand]
+    public async Task<string> GetLogAsync()
+    {
+        await Task.Delay(5000);
+        return "100";
     }
 
     public void OnCompleted()
@@ -56,5 +60,3 @@ public partial class ViewModel : ObservableObject, IObserver<LogEntry>, IDisposa
         _observer?.Dispose();
     }
 }
-
-public record LogEntry(LogLevel LogLevel, string DateTime, string Message);

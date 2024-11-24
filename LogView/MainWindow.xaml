@@ -12,38 +12,40 @@
             <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
+
         <StackPanel Grid.Row="0">
             <Button Content="Push Me!" Command="{Binding AddLogCommand}"/>
+            <Button Content="Push Me!(Delya 5sec)" Command="{Binding GetLogCommand}"/>
             <TextBlock Text="{Binding DisplayLabel}"/>
         </StackPanel>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Records}" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="日時" Width="120" Binding="{Binding DateTime}" CanUserSort="False" />
-                <DataGridTextColumn Header="メッセージ" Width="*" Binding="{Binding Message}" CanUserSort="False"/>
-                
-            </DataGrid.Columns>
-            <DataGrid.CellStyle>
-                <Style TargetType="{x:Type DataGridCell}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding LogLevel}" Value="2">
-                            <Setter Property="Background" Value="White"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding LogLevel}" Value="3">
-                            <Setter Property="Background" Value="Yellow"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding LogLevel}" Value="4">
-                            <Setter Property="Background" Value="Red"/>
-                            <Setter Property="Foreground" Value="White"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding LogLevel}" Value="5">
-                            <Setter Property="Background" Value="Red"/>
-                            <Setter Property="Foreground" Value="White"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.CellStyle>
-        </DataGrid>
+        <ScrollViewer Grid.Row="1" >
+            <DataGrid ItemsSource="{Binding Records}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="日時" Width="120" Binding="{Binding DateTime}" CanUserSort="False" />
+                    <DataGridTextColumn Header="メッセージ" Width="*" Binding="{Binding Message}" CanUserSort="False"/>
 
+                </DataGrid.Columns>
+                <DataGrid.CellStyle>
+                    <Style TargetType="{x:Type DataGridCell}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding LogLevel}" Value="2">
+                                <Setter Property="Background" Value="White"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding LogLevel}" Value="3">
+                                <Setter Property="Background" Value="Yellow"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding LogLevel}" Value="4">
+                                <Setter Property="Background" Value="Red"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding LogLevel}" Value="5">
+                                <Setter Property="Background" Value="Red"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+            </DataGrid>
+        </ScrollViewer>
     </Grid>
 </Window>
