@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LogView.Log;
@@ -11,6 +12,7 @@ public partial class ViewModel : ObservableObject, IObserver<LogEntry>, IDisposa
     private ILogger<ViewModel> logger;
     private readonly ILogEntryObservable _logObserve;
     private IDisposable? _observer;
+    private object _observerLock = new object();
 
     [ObservableProperty]
     private ObservableCollection<LogEntry> records = new();
@@ -20,6 +22,7 @@ public partial class ViewModel : ObservableObject, IObserver<LogEntry>, IDisposa
         this.logger = logger;
         _logObserve = logObserve;
         _observer = _logObserve.Subscribe(this);
+        BindingOperations.EnableCollectionSynchronization(records, _observerLock);
     }
 
     [RelayCommand]
@@ -32,11 +35,24 @@ public partial class ViewModel : ObservableObject, IObserver<LogEntry>, IDisposa
         logger.LogWarning("warn");
     }
 
-    [RelayCommand]
-    public async Task<string> GetLogAsync()
+    public async Task<string> GetAAA()
     {
-        await Task.Delay(5000);
-        return "100";
+        await Task.Run(() =>
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                logger.LogInformation($"{i}");
+                Thread.Sleep(1000);
+            }
+        });
+
+        return "OK";
+    }
+
+    [RelayCommand]
+    public async Task GetLogAsync()
+    {
+        await GetAAA();
     }
 
     public void OnCompleted()
